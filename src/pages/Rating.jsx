@@ -9,11 +9,11 @@ const Rating = () => {
     const conditionData = useSelector(state => state.dayCondition.conditionData);
 
     const detailData = conditionData.find(condition => condition.id === id);
-    // console.log("dd>>",detailData);
+    console.log("detail data>>",detailData);
 
     return (
         <>
-            <Condition data={detailData} index={parseInt(id)} isRating={true}/>
+            <Condition data={detailData} indexId={id} isRating={true}/>
         </>
     )
 };

@@ -1,13 +1,13 @@
 import Condition from "../shared/components/Condtion";
 import {useSelector, useDispatch} from 'react-redux';
 import { fetchConditionData } from "../network/axios";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const List = () => {
 
     const { conditionData } = useSelector(state => state.dayCondition);
     const dispatch = useDispatch();
-    //console.log("list conditiondata >>",conditionData);
+    // console.log("list conditiondata >>",conditionData);
 
     useEffect(() => {
         dispatch(fetchConditionData());
@@ -18,8 +18,8 @@ const List = () => {
             <h3>
                 일주일 컨디션
             </h3>
-            {conditionData.map((data, index) => (
-                    <Condition data={data} index={index} isRating={false}/>
+            {conditionData.map((data) => (
+                    <Condition data={data} indexId={data.id} isRating={false}/>
             ))}
         </div>
     )

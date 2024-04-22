@@ -9,16 +9,15 @@ export const dayCondition = createSlice({
     initialState,
     reducers: {
         fetchCondition: (state, action) => {
-            console.log("fetch >>>",action.payload)
+            // console.log("fetch >>>",action.payload);
             state.conditionData = action.payload;
         },
         updateRate : (state, action) => {
-            console.log("update>>", action.payload);
-            const { id, rate } = action.payload;
-            const condition = state.conditionData.filter(item => item.id === id + '');
+            // console.log("update>>", action.payload);
+            const { id, newRate } = action.payload;
+            const condition = state.conditionData.find(item => item.id === id);
             if (condition) {
-                console.log("update condition>>", condition);
-                condition.rate = rate;
+                condition.rate = newRate;
             }
         },
     },
