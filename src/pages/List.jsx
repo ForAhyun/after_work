@@ -3,6 +3,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import { fetchConditionData } from "../network/axios";
 import { useEffect } from 'react';
 import Header from "../shared/components/Header";
+import styled from 'styled-components';
+
 
 const List = () => {
 
@@ -15,13 +17,20 @@ const List = () => {
     }, [dispatch]);
 
     return (
-        <div>
+        <ListContainer>
            <Header/>
             {conditionData.map((data) => (
                     <Condition data={data} indexId={data.id} isRating={false}/>
             ))}
-        </div>
+        </ListContainer>
     )
 };
 
 export default List;
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    height: 70vh;
+`;

@@ -1,5 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { getWeekdaysFromToday } from '../weekdays';
+import styled from 'styled-components';
+
 
 const Header = ({indexId}) => {
 
@@ -8,16 +10,26 @@ const Header = ({indexId}) => {
     let headerContent = '';
 
     if (location.pathname === '/') {
-      headerContent = <h3>일주일 컨디션</h3>;
+      headerContent = <HeaderText>일주일 컨디션</HeaderText>;
     } else {
 
-      headerContent = <h3>{weekday[indexId]}요일 평점 매기기</h3>; // 다른 경로에 대한 기본 헤더
+      headerContent = <HeaderText>{weekday[indexId]}요일 평점 매기기</HeaderText>; 
     }
     return (
-        <header>
+        <HeaderContainer>
             {headerContent}
-        </header>
+        </HeaderContainer>
     )
 };
 
 export default Header;
+
+const HeaderContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const HeaderText = styled.h3`
+    color: #424242;
+`;

@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import { useState } from "react";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 import { updateRateAsync } from "../../network/axios";
+import styled from 'styled-components';
 
 const Condition = ({data, indexId, isRating}) => {
 
@@ -31,29 +32,75 @@ const Condition = ({data, indexId, isRating}) => {
     }
     
     return (
-        <div>
-            {weekday[indexId]} 
-            {data.rate === 0 && !isRating ? '-' : (
+        <Container>
+            <Day>
+                {weekday[indexId]} 
+            </Day>
+            
+            
+            {data.rate === 0 && !isRating 
+            ? <ZeroStar>-</ZeroStar> 
+                : (
                 Array.from({ length: 5 }).map((_, index) => (
-                    <span key={index} onClick={() => handleStarClick(isRating, index)}>
+                    <Star key={index} onClick={() => handleStarClick(isRating, index)}>
                        {index < localRate ? <IoIosStar /> : <IoIosStarOutline />}
-                    </span>
+                    </Star>
                 ))
             )}
             
             {isRating ? (
-                <div>
-                    <button onClick={handleRateSaved}>저장</button>
-                </div>
+                <SavedBtn>
+                    <Btn onClick={handleRateSaved}>저장하기</Btn>
+                </SavedBtn>
             ) : (
-                <div>
+                <ButtonContainer>
                     <Link to={`/rating/${data.id}`}>
-                    <button>수정</button>
+                    <Btn>수정</Btn>
                     </Link>
-                </div>
+                </ButtonContainer>
             )}
-        </div>
+        </Container>
     )
 };
 
 export default Condition;
+
+const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Day = styled.div`
+    font-size: 1.2rem;
+    margin: 15px 25px;
+    padding1: 10px;
+    color: #424242;
+`;
+
+const ButtonContainer = styled.div`
+`;
+
+const SavedBtn = styled.div`
+`;
+
+const Btn = styled.button`
+    width: 80px;
+    height: 40px;
+    border: none;
+    color: white;
+    background-color: black;
+    margin: 10px 20px;
+    padding : 5px;
+`;
+
+const Star = styled.span`
+    font-size: 40px;
+    margin: 5px
+`;
+
+const ZeroStar = styled.span`
+    font-size: 35px;
+    align-items: center;
+    margin: 0 118px;
+`;
