@@ -2,6 +2,7 @@ import Condition from "../shared/components/Condtion";
 import {useSelector, useDispatch} from 'react-redux';
 import { fetchConditionData } from "../network/axios";
 import { useEffect } from 'react';
+import Header from "../shared/components/Header";
 
 const List = () => {
 
@@ -15,9 +16,7 @@ const List = () => {
 
     return (
         <div>
-            <h3>
-                일주일 컨디션
-            </h3>
+           <Header/>
             {conditionData.map((data) => (
                     <Condition data={data} indexId={data.id} isRating={false}/>
             ))}
