@@ -5,7 +5,6 @@ import Header from '../shared/components/Header';
 import styled from 'styled-components';
 
 
-
 const Rating = () => {
 
     const { id } = useParams();

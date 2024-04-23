@@ -1,10 +1,11 @@
 import { getWeekdaysFromToday } from "../weekdays";
 import { Link, useNavigate } from "react-router-dom";
 import {useDispatch} from 'react-redux';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 import { updateRateAsync } from "../../network/axios";
 import styled from 'styled-components';
+import Toast from "./Toast";
 
 const Condition = ({data, indexId, isRating}) => {
 
@@ -13,6 +14,8 @@ const Condition = ({data, indexId, isRating}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [localRate, setLocalRate] = useState(data.rate);
+    const [showToast, setShowToast] = useState(false); 
+    const [toastMessage, setToastMessage] = useState(''); 
 
 
     const handleStarClick = (isRating, index) => {
@@ -28,8 +31,27 @@ const Condition = ({data, indexId, isRating}) => {
 
     const handleRateSaved = async() => {
         await dispatch(updateRateAsync(indexId, localRate));
-        navigate("/");
+
+        setShowToast(true);
+        setToastMessage('평점이 입력되었습니다.'); 
+        setTimeout(() => {
+            setShowToast(false); 
+        }, 1500); 
     }
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            const rating = Number(event.key);
+            if (isRating && rating >= 0 && rating <= 5) {
+                setLocalRate(rating);
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isRating]);
     
     return (
         <Container>
@@ -42,16 +64,24 @@ const Condition = ({data, indexId, isRating}) => {
             ? <ZeroStar>-</ZeroStar> 
                 : (
                 Array.from({ length: 5 }).map((_, index) => (
-                    <Star key={index} onClick={() => handleStarClick(isRating, index)}>
+                    <Star 
+                        key={index} 
+                        onClick={() => handleStarClick(isRating, index)}    
+                    >
                        {index < localRate ? <IoIosStar /> : <IoIosStarOutline />}
                     </Star>
                 ))
             )}
             
             {isRating ? (
+                <>
                 <SavedBtn>
                     <Btn onClick={handleRateSaved}>저장하기</Btn>
                 </SavedBtn>
+                <BackBtn onClick={() => {
+                    navigate(-1);
+                }}>뒤로가기</BackBtn>
+                </>
             ) : (
                 <ButtonContainer>
                     <Link to={`/rating/${data.id}`}>
@@ -59,6 +89,7 @@ const Condition = ({data, indexId, isRating}) => {
                     </Link>
                 </ButtonContainer>
             )}
+            {showToast && <Toast message={toastMessage} />} 
         </Container>
     )
 };
@@ -92,6 +123,18 @@ const Btn = styled.button`
     background-color: black;
     margin: 10px 20px;
     padding : 5px;
+    cursor: pointer;
+`;
+
+const BackBtn = styled.button`
+    width: 80px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    position: absolute;
+    bottom: 400px;
 `;
 
 const Star = styled.span`
